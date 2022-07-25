@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: './src/main.js',
@@ -61,7 +62,7 @@ if (process.env.NODE_ENV === 'production') {
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
-      'process.env': {
+      "process.env": {
         NODE_ENV: '"production"'
       }
     }),
@@ -71,8 +72,18 @@ if (process.env.NODE_ENV === 'production') {
         warnings: false
       }
     }),
+    new HtmlWebpackPlugin({
+      filename: path.resolve(__dirname, "./dist/index.html"), // the path where is the `index.html` generated.
+      template: "index.html",
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      }
+    }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
     })
-  ])
+  ]);
 }
